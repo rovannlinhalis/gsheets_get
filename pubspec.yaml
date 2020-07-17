@@ -2,7 +2,7 @@ name: gsheets_get
 description: 'Flutter package to obtain data from a public Google sheets spreadsheet.
 1-The spreadsheet must be published as a web page.
 2-Enter the spreadsheet Id in GSheetsGet'
-version: 0.0.2
+version: 0.0.4
 homepage: "https://www.rovann.com.br"
 repository: "https://github.com/rovannlinhalis/gsheets_get"
 

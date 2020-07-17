@@ -3,6 +3,7 @@ library gsheets_get;
 import 'dart:convert';
 import 'dart:io';
 
+///GSheetsGet is a service class to retrieve an Google sheet.
 class GSheetsGet {
   final String sheetId;
   final int page;
@@ -10,9 +11,11 @@ class GSheetsGet {
 
   GSheetsGet({this.sheetId, this.page, this.skipRows});
 
+  ///return final url of sheet, with id and page
   String get urlSheet =>
-      "https://spreadsheets.google.com/feeds/cells/${sheetId}/${page}/public/full?alt=json";
+      "https://spreadsheets.google.com/feeds/cells/$sheetId/$page/public/full?alt=json";
 
+  ///execute httpget method
   Future<HTTPResponse> httpGet() async {
     HttpClient httpClient = new HttpClient();
     httpClient..badCertificateCallback = (cert, host, port) => true;
@@ -27,9 +30,11 @@ class GSheetsGet {
         code: response.statusCode);
   }
 
+  ///return a GSheetsResult. Check if sucess before get value of sheet object
   Future<GSheetsResult> getSheet() async {
     var result = await httpGet();
 
+    //check if result is sucess
     if (result.sucess) {
       var r = json.decode(result.content);
       GoogleSheet sheet = GoogleSheet.fromJson(r);
@@ -60,30 +65,51 @@ class GSheetsGet {
   }
 }
 
+///Each row of sheet
 class Row {
+  ///Collection of cell for each row
   final List<GsCell> cells;
   Row({this.cells});
 }
 
+///Object with result of method get
 class GSheetsResult {
+  ///Google sheet object
   GoogleSheet sheet;
+
+  ///if true, get value of sheet, else get message
   bool sucess;
+
+  ///message when fails
   String message;
   GSheetsResult({this.sheet, this.sucess, this.message});
 }
 
+///Http result
 class HTTPResponse {
+  ///content of response
   String content;
+
+  ///if http code between 200 and 299
   bool sucess;
+
+  ///http code
   int code;
   HTTPResponse({this.sucess, this.content, this.code});
 }
 
-/// A Calculator.
+///Sheet model
 class GoogleSheet {
+  ///version of sheet
   String version;
+
+  ///encoding
   String encoding;
+
+  ///feed of sheet
   Feed feed;
+
+  ///rows of sheet
   List<Row> rows;
 
   GoogleSheet({this.version, this.encoding, this.feed});
@@ -105,20 +131,34 @@ class GoogleSheet {
   }
 }
 
+///Feed of Sheet
 class Feed {
+  ///xml namespace
   String xmlns;
   String xmlnsOpenSearch;
   String xmlnsBatch;
   String xmlnsGs;
   Id id;
   Id updated;
+
+  ///categories
   List<Category> category;
+
+  ///title of sheet
   Title title;
+
+  ///links of sheet
   List<Link> link;
+
+  ///Authors of sheet
   List<Author> author;
   Id openSearchTotalResults;
   Id openSearchStartIndex;
+
+  ///total rows of sheet
   Id gsRowCount;
+
+  ///total columns of sheet
   Id gsColCount;
 
   List<Entry> entry;
@@ -229,6 +269,7 @@ class Feed {
   }
 }
 
+///Id type
 class Id {
   String text;
 
@@ -245,6 +286,7 @@ class Id {
   }
 }
 
+///Category type
 class Category {
   String scheme;
   String term;
@@ -264,6 +306,7 @@ class Category {
   }
 }
 
+///Title type
 class Title {
   String type;
   String text;
@@ -283,6 +326,7 @@ class Title {
   }
 }
 
+///Link type
 class Link {
   String rel;
   String type;
@@ -305,6 +349,7 @@ class Link {
   }
 }
 
+///Author type
 class Author {
   Id name;
   Id email;
@@ -328,6 +373,7 @@ class Author {
   }
 }
 
+///Entry type
 class Entry {
   Id id;
   Id updated;
@@ -395,11 +441,21 @@ class Entry {
   }
 }
 
+///Each cell of sheet, GsCell type
 class GsCell {
+  ///number of row
   String row;
+
+  ///number of column
   String col;
+
+  ///input value of cell, example "=1+1"
   String inputValue;
+
+  ///text of cell, example "2"
   String text;
+
+  ///numeric value of cell, example 2
   String numericValue;
 
   GsCell({this.row, this.col, this.inputValue, this.text, this.numericValue});

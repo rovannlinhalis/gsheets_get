@@ -1,14 +1,18 @@
 # gsheets_get
 
-A new Flutter package project.
+Flutter package to obtain data from a public Google sheets spreadsheet.
+1-The spreadsheet must be published as a web page.
+2-Enter the spreadsheet Id in GSheetsGet
+
+pt-Br: Pacote flutter para obter dados de uma planilha pública do google sheets.
+1-A planilha deve estar publicada como uma página da web.
+2-Informe o Id da planilha no GSheetsGet
 
 ## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+1-The spreadsheet must be published as a web page.
+2-Enter the spreadsheet Id in GSheetsGet
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+---
+1-A planilha deve estar publicada como uma página da web.
+2-Informe o Id da planilha no GSheetsGet

@@ -3,12 +3,12 @@ library gsheets_get;
 import 'dart:convert';
 import 'dart:io';
 
-class GoogleSheetsApi {
+class GSheetsGet {
   final String sheetId;
   final int page;
   final int skipRows;
 
-  GoogleSheetsApi({this.sheetId, this.page, this.skipRows});
+  GSheetsGet({this.sheetId, this.page, this.skipRows});
 
   String get urlSheet =>
       "https://spreadsheets.google.com/feeds/cells/${sheetId}/${page}/public/full?alt=json";
@@ -34,8 +34,8 @@ class GoogleSheetsApi {
       var r = json.decode(result.content);
       GoogleSheet sheet = GoogleSheet.fromJson(r);
 
-      int countRows = int.parse(sheet.feed.gsRowCount.t);
-      int countColumns = int.parse(sheet.feed.gsColCount.t);
+      int countRows = int.parse(sheet.feed.gsRowCount.text);
+      int countColumns = int.parse(sheet.feed.gsColCount.text);
 
       List<Row> lista = new List<Row>(countRows);
 
@@ -230,17 +230,17 @@ class Feed {
 }
 
 class Id {
-  String t;
+  String text;
 
-  Id({this.t});
+  Id({this.text});
 
   Id.fromJson(Map<String, dynamic> json) {
-    t = json['\$t'];
+    text = json['\$t'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['\$t'] = this.t;
+    data['\$t'] = this.text;
     return data;
   }
 }
@@ -266,19 +266,19 @@ class Category {
 
 class Title {
   String type;
-  String t;
+  String text;
 
-  Title({this.type, this.t});
+  Title({this.type, this.text});
 
   Title.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    t = json['\$t'];
+    text = json['\$t'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['type'] = this.type;
-    data['\$t'] = this.t;
+    data['\$t'] = this.text;
     return data;
   }
 }
@@ -399,16 +399,16 @@ class GsCell {
   String row;
   String col;
   String inputValue;
-  String t;
+  String text;
   String numericValue;
 
-  GsCell({this.row, this.col, this.inputValue, this.t, this.numericValue});
+  GsCell({this.row, this.col, this.inputValue, this.text, this.numericValue});
 
   GsCell.fromJson(Map<String, dynamic> json) {
     row = json['row'];
     col = json['col'];
     inputValue = json['inputValue'];
-    t = json['\$t'];
+    text = json['\$t'];
     numericValue = json['numericValue'];
   }
 
@@ -417,7 +417,7 @@ class GsCell {
     data['row'] = this.row;
     data['col'] = this.col;
     data['inputValue'] = this.inputValue;
-    data['\$t'] = this.t;
+    data['\$t'] = this.text;
     data['numericValue'] = this.numericValue;
     return data;
   }

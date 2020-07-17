@@ -1,5 +1,12 @@
 name: gsheets_get
-description: A Flutter package to get data from public google sheet. 
+description: 'Flutter package to obtain data from a public Google sheets spreadsheet.
+1-The spreadsheet must be published as a web page.
+2-Enter the spreadsheet Id in GSheetsGet
+
+pt-Br: Pacote flutter para obter dados de uma planilha pública do google sheets.
+1-A planilha deve estar publicada como uma página da web.
+2-Informe o Id da planilha no GSheetsGet
+'
 version: 0.0.1
 author: "Rovann Linhalis"
 homepage: "rovann.com.br"

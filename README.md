@@ -16,7 +16,7 @@ pt-Br: Pacote flutter para obter dados de uma planilha pública do google sheets
 ---
 1-A planilha deve estar publicada como uma página da web.
 2-Informe o Id da planilha no GSheetsGet
-
+```
   final GSheetsGet sheet = GSheetsGet(
       sheetId: "1FeiUH1ZDUvlcrn_AnFqEW62YdSvoDntBSfHfVjihjQ4",
       page: 1,
@@ -37,3 +37,4 @@ pt-Br: Pacote flutter para obter dados de uma planilha pública do google sheets
   } else {
     print(result.message);
   }
+```

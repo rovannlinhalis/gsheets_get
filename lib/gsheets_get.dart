@@ -125,8 +125,9 @@ class Feed {
   Id openSearchStartIndex;
   Id gsRowCount;
   Id gsColCount;
+  
   List<Entry> entry;
-
+ 
   Feed(
       {this.xmlns,
       this.xmlnsOpenSearch,

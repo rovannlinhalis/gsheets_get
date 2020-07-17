@@ -12,9 +12,11 @@ final GoogleSheetsApi sheet =
      result.rows.forEach((row) {
         StringBuffer buffer = new StringBuffer();
         buffer.write(">");
-        row.cells.forEach((cell) { 
-          buffer.write(cell.toString() + "|");
+        if (row != null)
+        {row.cells.forEach((cell) { 
+          buffer.write(cell?.t.toString() + "|");
         });
+        }
        print(buffer.toString());
     });
 

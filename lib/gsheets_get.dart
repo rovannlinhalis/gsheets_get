@@ -10,7 +10,8 @@ class GoogleSheetsApi {
 
   GoogleSheetsApi({this.sheetId, this.page, this.skipRows});
 
-  String get urlSheet => "https://spreadsheets.google.com/feeds/cells/${sheetId}/${page}/public/full?alt=json";
+  String get urlSheet =>
+      "https://spreadsheets.google.com/feeds/cells/${sheetId}/${page}/public/full?alt=json";
 
   Future<HTTPResponse> httpGet() async {
     HttpClient httpClient = new HttpClient();
@@ -26,49 +27,52 @@ class GoogleSheetsApi {
         code: response.statusCode);
   }
 
-
-Future<GSheetsResult> getSheet() async {
+  Future<GSheetsResult> getSheet() async {
     var result = await httpGet();
 
     if (result.sucess) {
       var r = json.decode(result.content);
       GoogleSheet sheet = GoogleSheet.fromJson(r);
-      List<Row> lista = new List<Row>();
+
+      int countRows = int.parse(sheet.feed.gsRowCount.t);
+      int countColumns = int.parse(sheet.feed.gsColCount.t);
+
+      List<Row> lista = new List<Row>(countRows);
 
       sheet.feed.entry.forEach((element) {
         int row = int.parse(element.gsCell.row);
-        int listIndex = row - skipRows -1;
-        if (row > skipRows) { //primeira linha, nome das colunas
+        int listIndex = row - skipRows - 1;
+        if (row > skipRows) {
+          //primeira linha, nome das colunas
           int column = int.parse(element.gsCell.col);
-          if (lista.length < (row-skipRows))
-          {
-              lista.add(new Row());
+          // if (lista.length < (row - skipRows)) {
+          //   lista.add(new Row(cells: new List<GsCell>(countColumns)));
+          // }
+          // while (lista[listIndex].cells.length < column-1)
+          // {
+          //   lista[listIndex].cells.add(GsCell());
+          // }
+          if (lista[listIndex] == null) {
+            lista[listIndex] = new Row(cells: new List<GsCell>(countColumns));
           }
-          while (lista[listIndex].cells.length < column-1)
-          {
-            lista[listIndex].cells.add(null);
-          }
-        
-          lista[listIndex].cells.insert(column-1,  element.gsCell?.t?? "");
+
+          lista[listIndex].cells[column - 1] = element.gsCell;
         }
       });
 
-      return GSheetsResult(message: "sucess", rows: lista, sucess: true);
+      return GSheetsResult(message: "sucess", rows: lista.where((element) => element != null).toList(), sucess: true);
     } else {
       return GSheetsResult(message: result.content, sucess: false);
     }
   }
-
-
 }
 
-class Row
-{
-    List<dynamic> cells = new List<dynamic>();
+class Row {
+  final List<GsCell> cells;
+  Row({this.cells});
 }
 
-class GSheetsResult
-{
+class GSheetsResult {
   List<Row> rows;
   bool sucess;
   String message;
@@ -79,11 +83,8 @@ class HTTPResponse {
   String content;
   bool sucess;
   int code;
-  HTTPResponse(
-      {this.sucess, this.content,this.code});
+  HTTPResponse({this.sucess, this.content, this.code});
 }
-
-
 
 /// A Calculator.
 class GoogleSheet {
@@ -125,9 +126,9 @@ class Feed {
   Id openSearchStartIndex;
   Id gsRowCount;
   Id gsColCount;
-  
+
   List<Entry> entry;
- 
+
   Feed(
       {this.xmlns,
       this.xmlnsOpenSearch,
@@ -240,12 +241,12 @@ class Id {
   Id({this.t});
 
   Id.fromJson(Map<String, dynamic> json) {
-    t = json['$t'];
+    t = json['\$t'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['$t'] = this.t;
+    data['\$t'] = this.t;
     return data;
   }
 }
@@ -277,13 +278,13 @@ class Title {
 
   Title.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    t = json['$t'];
+    t = json['\$t'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['type'] = this.type;
-    data['$t'] = this.t;
+    data['\$t'] = this.t;
     return data;
   }
 }
@@ -427,5 +428,3 @@ class GsCell {
     return data;
   }
 }
-
-

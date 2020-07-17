@@ -43,24 +43,17 @@ class GoogleSheetsApi {
         int row = int.parse(element.gsCell.row);
         int listIndex = row - skipRows - 1;
         if (row > skipRows) {
-          //primeira linha, nome das colunas
           int column = int.parse(element.gsCell.col);
-          // if (lista.length < (row - skipRows)) {
-          //   lista.add(new Row(cells: new List<GsCell>(countColumns)));
-          // }
-          // while (lista[listIndex].cells.length < column-1)
-          // {
-          //   lista[listIndex].cells.add(GsCell());
-          // }
           if (lista[listIndex] == null) {
             lista[listIndex] = new Row(cells: new List<GsCell>(countColumns));
           }
-
           lista[listIndex].cells[column - 1] = element.gsCell;
         }
       });
 
-      return GSheetsResult(message: "sucess", rows: lista.where((element) => element != null).toList(), sucess: true);
+      sheet.rows = lista.where((element) => element != null).toList();
+
+      return GSheetsResult(message: "sucess", sheet: sheet, sucess: true);
     } else {
       return GSheetsResult(message: result.content, sucess: false);
     }
@@ -73,10 +66,10 @@ class Row {
 }
 
 class GSheetsResult {
-  List<Row> rows;
+  GoogleSheet sheet;
   bool sucess;
   String message;
-  GSheetsResult({this.rows, this.sucess, this.message});
+  GSheetsResult({this.sheet, this.sucess, this.message});
 }
 
 class HTTPResponse {
@@ -91,6 +84,7 @@ class GoogleSheet {
   String version;
   String encoding;
   Feed feed;
+  List<Row> rows;
 
   GoogleSheet({this.version, this.encoding, this.feed});
 

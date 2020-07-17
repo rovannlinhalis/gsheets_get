@@ -1,8 +1,9 @@
 name: gsheets_get
-description: A new Flutter package project.
+description: A Flutter package to get data from public google sheet. 
 version: 0.0.1
-author:
-homepage:
+author: "Rovann Linhalis"
+homepage: "rovann.com.br"
+repository: ""
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

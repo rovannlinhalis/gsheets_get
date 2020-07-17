@@ -9,7 +9,7 @@ final GoogleSheetsApi sheet =
   test('adds one to input values', () async {
     GSheetsResult result = await sheet.getSheet();
 
-     result.rows.forEach((row) {
+     result.sheet.rows.forEach((row) {
         StringBuffer buffer = new StringBuffer();
         buffer.write(">");
         if (row != null)
@@ -22,7 +22,7 @@ final GoogleSheetsApi sheet =
 
 
     expect(result.sucess , true );
-    expect(result.rows.length, 2 );
+    expect(result.sheet.rows.length, 2 );
 
    
 
